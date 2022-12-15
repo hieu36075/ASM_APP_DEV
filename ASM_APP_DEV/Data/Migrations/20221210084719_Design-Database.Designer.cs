@@ -93,8 +93,8 @@ namespace ASM_APP_DEV.Data.Migrations
                     b.Property<int>("PriceOrder")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
