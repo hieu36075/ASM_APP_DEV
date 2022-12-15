@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<Category>
+
+<h1>Hello admin</h1>
+
+<div class="form-group">
+
+   <a class="nav-link text-dark"  asp-action="Index">Manage Account</a>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name Categorie</th>
+      <th scope="col">Categories Status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+       @foreach(var item in Model){
+
+    <tr> 
+      <td>@item.Id</td>
+      <td>@item.NameCategory</td>
+      <td>@item.CategoryStatus</td>
+      <td href="">Accept</td>
+      <td href="">Reject</td>
+
+
+    </tr> 
+        }
+  </tbody>
+</table>
