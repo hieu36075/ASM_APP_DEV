@@ -27,7 +27,7 @@ namespace ASM_APP_DEV.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
                     DateOrder = table.Column<DateTime>(nullable: false),
                     PriceOrder = table.Column<int>(nullable: false),
                     OrderStatus = table.Column<int>(nullable: false),
