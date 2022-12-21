@@ -63,7 +63,7 @@ namespace ASM_APP_DEV
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Book}/{action=Index}/{id?}");
+					pattern: "{controller=Books}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});
 		}
