@@ -26,11 +26,45 @@ namespace ASM_APP_DEV.Controllers
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            //var booksInDb = _dbContext.Books.ToList();
             var bookInDb = _context.Books.SingleOrDefault(b => b.Id == id);
 
             return View(bookInDb);
         }
 
+
+		[HttpPost]
+		public IActionResult Create(Book book)
+		{
+
+            var newBook = new Book();
+            newBook.NameBook = book.NameBook;
+            newBook.InformationBook = book.InformationBook;
+            newBook.QuantityBook = book.QuantityBook;
+            newBook.PriceBook = book.PriceBook;
+
+
+            _context.Add(newBook);
+            _context.SaveChanges();
+
+
+			return RedirectToAction("Index");
+		}
+        [HttpPost]
+        public IActionResult Edit(Book book)
+        {
+
+            var newBook = new Book();
+            newBook.NameBook = book.NameBook;
+            newBook.InformationBook = book.InformationBook;
+            newBook.QuantityBook = book.QuantityBook;
+            newBook.PriceBook = book.PriceBook;
+
+
+            _context.Add(newBook);
+            _context.SaveChanges();
+
+
+            return RedirectToAction("Index");
+        }
     }
 }
