@@ -18,5 +18,12 @@ namespace ASM_APP_DEV.Controllers
             
             return View(categoriesInDb); 
         }
+
+        public IActionResult Create()
+        {
+            var categoriesInDb = dbContext.Categories.ToList();
+
+            return View(categoriesInDb);
+        }
     }
 }
