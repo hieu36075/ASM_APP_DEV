@@ -1,13 +1,18 @@
 ﻿using ASM_APP_DEV.Data;
 using ASM_APP_DEV.Models;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using System.Data;
 using System.Linq;
 
 namespace ASM_APP_DEV.Controllers
 {
+
+   
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private ApplicationDbContext context;
