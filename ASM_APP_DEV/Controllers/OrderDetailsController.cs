@@ -38,6 +38,7 @@ namespace ASM_APP_DEV.Controllers
 
 		}
         [HttpGet]
+
         public IActionResult Delete(int id)
         {
             var OrderDetails = context.OrderDetails.Include(t => t.Order).SingleOrDefault(t => t.Id == id && t.Order.OrderStatus == Enums.OrderStatus.Unconfirmed);

@@ -4,9 +4,23 @@
 @{
 }
 @model IEnumerable<OrderDetail>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Order Details Table with Search Filter</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
 <div class="container-fluid">
-
-
         <a asp-controller="Orders" asp-action="Index" class="" title="View Details" data-toggle="tooltip"><i class="btn btn-info">Order List</i></a>
     <div class="container">
         <!-- Title -->
@@ -30,6 +44,7 @@
                                 <span class="badge rounded-pill bg-info">SHIPPING</span>
                             </div>
                             <div class="d-flex">
+                                    <a asp-controller="OrderDetails" asp-action="Delete" class="" title="Delete" data-toggle="tooltip"><i class="material-icons">delete</i></a>
                                 <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i class="bi bi-download"></i> <span class="text">Invoice</span></button>
                                 <div class="dropdown">
                                     <button class="btn btn-link p-0 text-muted" type="button" data-bs-toggle="dropdown">
@@ -55,13 +70,25 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>@item.Quantity</td>
-                                    <td class="text-end">@item.Price</td>
+											<td>
+												<input asp-for="@item.Id" type="hidden" value="@item.Id" id="id @item.Id" />
+                                                <input asp-for="@item.Price" type="hidden" value="@item.Price" id="price @item.Id" />
+                                                <input asp-for="@item.Quantity" type="hidden" value="@item.Quantity" id="quantityOld @item.Id" />
+
+                                                <input asp-for="@item.Quantity" style="width: 68px !important" id="quantity @item.Id" value="@item.Quantity"
+                                               onchange="refresh(
+                                                        document.getElementById('quantityOld @item.Id').value,
+                                                        document.getElementById('quantity @item.Id').value,
+                                                        document.getElementById('price @item.Id').value,
+                                                        document.getElementById('id @item.Id').value)" />
+                                            </td>
+
+                                            <td class="text-end" id="demo @item.Id">@item.Price</td>
                                 </tr>
                             </tbody>
                              
                         </table>
-                            <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id=@item.Id class="btn btn-danger">Delete OrerDetails</a>
+                          
                     </div>
                 </div>
             </div>
@@ -86,9 +113,23 @@
                                         Total: $169,98 <span class="badge bg-success rounded-pill">PAID</span>
                                     </p>
                     </div>
+                        <a asp-controller="Orders" asp-action="Index" class="" title="View Details" data-toggle="tooltip"><i class="btn btn-info">Buy</i></a>
+
                 </div>
             </div>
         </div>
     </div>
     
 </div>
+</body>
+</html>
+
+
+  <script>
+function refresh(quantityOld, quantity, price, id) {
+
+    var b = price / quantityOld; 
+   var a = 'demo ' + id;
+        document.getElementById(a).innerHTML = quantity * b;
+}
+</script>

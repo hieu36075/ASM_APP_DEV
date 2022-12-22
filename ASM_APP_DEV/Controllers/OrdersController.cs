@@ -1,9 +1,11 @@
 ﻿using ASM_APP_DEV.Data;
 using ASM_APP_DEV.Enums;
 using ASM_APP_DEV.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,17 +30,22 @@ namespace ASM_APP_DEV.Controllers
 
         }
         [HttpGet]
+		[Authorize(Roles = "user")]
+
 		public async Task<IActionResult> Create(int id) {
 
             var currentUser = await userManager.GetUserAsync(User);
-
+            var orderUnconfirmInDb = context.Orders.Include(o => o.OrderDetails)
+                .SingleOrDefault(o => o.OrderStatus == OrderStatus.Unconfirmed && o.UserId == currentUser.Id);
 
             Book bookInDB = context.Books.SingleOrDefault(t => t.Id == id);
-
+            if (orderUnconfirmInDb == null)
+            {
                 var order = new Order();
                 order.UserId = currentUser.Id;
                 order.OrderStatus = Enums.OrderStatus.Unconfirmed;
-                order.PriceOrder = 0;
+                order.PriceOrder = bookInDB.PriceBook;
+                order.UserId = currentUser.Id;
                 context.Add(order);
                 context.SaveChanges();
 
@@ -46,24 +53,52 @@ namespace ASM_APP_DEV.Controllers
                 orderDetail.IdBook = bookInDB.Id;
                 orderDetail.IdOrder = order.Id;
                 orderDetail.Quantity = 1;
-                orderDetail.Price = 0;
-            orderDetail.Order = order;
-            orderDetail.Book = bookInDB; 
-     
+                orderDetail.Price = bookInDB.PriceBook;
+                orderDetail.Order = order;
+                orderDetail.Book = bookInDB;
+
                 context.OrderDetails.Add(orderDetail);
                 context.SaveChanges();
                 order.OrderDetails.Add(orderDetail);
-            //}
-            //else
-            //{
+				context.SaveChanges();
 
-            //    OrderDetail orderDetail = new OrderDetail();
-            //    orderDetail.IdBook = bookInDB.Id;
-            //    orderDetail.IdOrder = orderUnconfirmed.Id;
-            //    orderDetail.Quantity = 1;
-            //    orderUnconfirmed.OrderDetails.Add(orderDetail);
-            //}
-            context.SaveChanges();
+			}
+			else
+            {
+
+                var orderDetailInDb = orderUnconfirmInDb.OrderDetails.SingleOrDefault(o => o.IdBook == id);
+                if (orderDetailInDb == null) {
+                
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.IdBook = bookInDB.Id;
+                orderDetail.IdOrder = orderUnconfirmInDb.Id;
+                orderDetail.Quantity = 1;
+                orderUnconfirmInDb.OrderDetails.Add(orderDetail);
+                    context.Add(orderDetail);
+                    context.SaveChanges();
+
+                    foreach (var item in orderUnconfirmInDb.OrderDetails)
+                    {
+                        orderUnconfirmInDb.PriceOrder = 0;
+
+                        orderUnconfirmInDb.PriceOrder += item.Price;
+                    }
+                }
+                else
+                {
+                    orderDetailInDb.Quantity += 1;
+                    orderDetailInDb.Price = bookInDB.PriceBook * orderDetailInDb.Quantity;
+
+                    foreach (var orderDetail in orderUnconfirmInDb.OrderDetails)
+                    {
+                        orderUnconfirmInDb.PriceOrder = 0;
+                        orderUnconfirmInDb.PriceOrder += orderDetail.Price;
+                    }
+                }
+				context.SaveChanges();
+
+			}
+			context.SaveChanges();
 
             return RedirectToAction("Index", "OrderDetails");
 

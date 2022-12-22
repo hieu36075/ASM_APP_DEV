@@ -1,5 +1,6 @@
 ﻿using ASM_APP_DEV.Data;
 using ASM_APP_DEV.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.Linq;
 
 namespace ASM_APP_DEV.Controllers
 {
+    
     public class BooksController : Controller
     {
         private ApplicationDbContext _context;
@@ -16,6 +18,7 @@ namespace ASM_APP_DEV.Controllers
             _context = context;
         }
         [HttpGet]
+        [Authorize(Roles = "user")]
         public IActionResult Index()
         {
             //var booksInDb = _dbContext.Books.ToList();
