@@ -32,7 +32,9 @@ namespace ASM_APP_DEV
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+			
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 		}
@@ -63,7 +65,7 @@ namespace ASM_APP_DEV
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Books}/{action=Index}/{id?}");
+					pattern: "{controller=Admin}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});
 		}
