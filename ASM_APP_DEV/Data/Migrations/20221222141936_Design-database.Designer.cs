@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ASM_APP_DEV.Data.Migrations
+namespace ASM_APP_DEV.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221222132315_seed-data-roles")]
-    partial class seeddataroles
+    [Migration("20221222141936_Design-database")]
+    partial class Designdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -375,7 +375,7 @@ namespace ASM_APP_DEV.Data.Migrations
 
             modelBuilder.Entity("ASM_APP_DEV.Models.Order", b =>
                 {
-                    b.HasOne("ASM_APP_DEV.Models.User", null)
+                    b.HasOne("ASM_APP_DEV.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
                 });

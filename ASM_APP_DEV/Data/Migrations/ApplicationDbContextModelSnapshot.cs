@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ASM_APP_DEV.Data.Migrations
+namespace ASM_APP_DEV.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -94,12 +94,9 @@ namespace ASM_APP_DEV.Data.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                                         .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -376,7 +373,7 @@ namespace ASM_APP_DEV.Data.Migrations
 
             modelBuilder.Entity("ASM_APP_DEV.Models.Order", b =>
                 {
-                    b.HasOne("ASM_APP_DEV.Models.User", null)
+                    b.HasOne("ASM_APP_DEV.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
                 });
