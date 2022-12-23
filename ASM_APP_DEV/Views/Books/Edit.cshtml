@@ -4,59 +4,62 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Book</h4>
+<h1 style="margin-left: 41%" >Edit Books</h1>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <form class="row container-fluid" asp-action="Edit">
+    <div class="col-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="IdCategory" class="control-label"></label>
+                <label asp-for="IdCategory" class="control-label">Category</label>
                 <input asp-for="IdCategory" class="form-control" />
                 <span asp-validation-for="IdCategory" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NameBook" class="control-label"></label>
+            <div class= "form-group">
+                <label asp-for="NameBook" class="control-label">Name Book</label>
                 <input asp-for="NameBook" class="form-control" />
                 <span asp-validation-for="NameBook" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="QuantityBook" class="control-label"></label>
+                <label asp-for="QuantityBook" class="control-label">Quantity</label>
                 <input asp-for="QuantityBook" class="form-control" />
                 <span asp-validation-for="QuantityBook" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PriceBook" class="control-label"></label>
+                <label asp-for="PriceBook" class="control-label">Price</label>
                 <input asp-for="PriceBook" class="form-control" />
                 <span asp-validation-for="PriceBook" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="InformationBook" class="control-label"></label>
-                <input asp-for="InformationBook" class="form-control" />
-                <span asp-validation-for="InformationBook" class="text-danger"></span>
             </div>
+            <div class="col-6">
+            
             <div class="form-group">
-                <label asp-for="CreateAt" class="control-label"></label>
+                
+                <label asp-for="InformationBook" class="control-label">Information</label>
+                <textarea class="form-control" style="height: 7.7rem"  asp-for="InformationBook"></textarea>
+                <span asp-validation-for="InformationBook" class="text-danger"></span>
+
+            </div>
+            <div class="form-group" style="width: 40%">
+                <label asp-for="CreateAt" class="control-label">Create At</label>
                 <input asp-for="CreateAt" class="form-control" />
                 <span asp-validation-for="CreateAt" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group" >
+                <input type="submit" value="Update" class="btn btn-primary" style="margin-left: 87%"/>
             </div>
         </form>
+        </div>
     </div>
 </div>
 
 <div>
+    <div class = container>
+    <button type="button" class="btn btn-outline-primary"  
     <a asp-action="Index">Back to List</a>
+    </button>
+    </div>
 </div>
 
 @section Scripts {
