@@ -18,7 +18,6 @@ namespace ASM_APP_DEV.Controllers
             _context = context;
         }
         [HttpGet]
-        [Authorize(Roles = "user")]
         public IActionResult Index()
         {
             //var booksInDb = _dbContext.Books.ToList();
