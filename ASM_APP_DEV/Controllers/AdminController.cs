@@ -57,52 +57,25 @@ namespace ASM_APP_DEV.Controllers
 
             return View(categories);
         }
+
         public IActionResult AcceptCategory(int id)
         {
-        
-				var categoryInDb = context.Categories.SingleOrDefault(o => o.Id == id);
 
-			categoryInDb.CategoryStatus = CategoryStatus.Successful;
-                context.SaveChanges();
-			return RedirectToAction("Categories");
-		}
-		public IActionResult RejectCategory(int id)
-		{
-	
-				var categoryInDb = context.Categories.SingleOrDefault(o => o.Id == id);
+            var categoryInDb = context.Categories.SingleOrDefault(o => o.Id == id);
 
-			context.Remove(categoryInDb);
-				context.SaveChanges();
+            categoryInDb.CategoryStatus = CategoryStatus.Successful;
+            context.SaveChanges();
+            return RedirectToAction("Categories");
+        }
+        public IActionResult RejectCategory(int id)
+        {
 
-			return RedirectToAction("Categories");
-		}
+            var categoryInDb = context.Categories.SingleOrDefault(o => o.Id == id);
 
-		[HttpGet]
-		public IActionResult ChangePassword(string id)
-		{
-			var getUser = context.Users.SingleOrDefault(t => t.Id == id);
+            context.Remove(categoryInDb);
+            context.SaveChanges();
 
-			return View(getUser);
-		}
-
-
-		[HttpPost]
-		public IActionResult ChangePassword(string id, User user)
-		{
-			var getUser = context.Users.SingleOrDefault(t => t.Id == id);
-
-			var newPassword = user.PasswordHash;
-
-			if (newPassword == null)
-			{
-				ModelState.AddModelError("NoInput", "You have not input new password.");
-				return View();
-			}
-
-			getUser.PasswordHash = _userManager.PasswordHasher.HashPassword(getUser, newPassword);
-
-			context.SaveChanges();
-			return RedirectToAction("Index");
-		}
-	}
+            return RedirectToAction("Categories");
+        }
+    }
 }
