@@ -3,59 +3,126 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="container">
+    <div class="py-5 text-center">
+        <h1>Create Form</h1>
+        </div>
+</div>
 
-<h1>Create</h1>
+<div class="col-md-7 col-lg-8">
+    <h4 class="mb-3">Book Information</h4>
+    
+</div>
+
+<hr />
+<div class="row">
+    
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NameBook" class="control-label">Name</label>
+                <input asp-for="NameBook" class="form-control" />
+                <span asp-validation-for="NameBook" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantityBook" class="control-label">Quantity</label>
+                <input asp-for="QuantityBook" class="form-control" />
+                <span asp-validation-for="QuantityBook" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceBook" class="control-label">Price</label>
+                <input asp-for="PriceBook" class="form-control" />
+                <span asp-validation-for="PriceBook" class="text-danger"></span>
+            </div>
+        
+            <div class="form-group">
+                <label asp-for="CreateAt" class="control-label">Create At</label>
+                <input asp-for="CreateAt" class="form-control" />
+                <span asp-validation-for="CreateAt" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+        
+    </div>
+    <div class="col-md-4">
+        <form action="/Books/Create" method="post" novalidate="novalidate">
+           
+            <div class="form-group">
+                <label asp-for="InformationBook" class="control-label">Information</label>
+                <input asp-for="InformationBook" class="form-control" />
+                <span asp-validation-for="InformationBook" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label" for="Image">Image</label>
+                <input class="form-control" type="text" id="Image" name="Image" value="">
+                <span class="text-danger field-validation-valid" data-valmsg-for="Image" data-valmsg-replace="true"></span>
+            </div>
+            
+        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8MeoyUBV2fZPtghOKLqY9WzpxD2dk8fHq8tCqAeUzL00_ga84VFzCAdo2lE3gbtwmXWtMU4eFn3h0LtYEcS0xTGO_cTc9rz6YXAb0bwcmfuyo9zfEoqCnz61bqgTUoSYkd4NpP6RW2hwL78b21nGPgk">
+       </form>
+ </div>
+</div>
+</div>
 
 <div>
-    <h4>Book</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdCategory)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdCategory)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NameBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NameBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuantityBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuantityBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PriceBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PriceBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InformationBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InformationBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-    </dl>
-    
-    <form asp-action="Create">
-        <input type="hidden" asp-for="Id" />
-        <a asp-action="Index">Back to List</a>
-    </form>
+    <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="/docs/5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+      <script src="form-validation.js"></script>
+
+<style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
