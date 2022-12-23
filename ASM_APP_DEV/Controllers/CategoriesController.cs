@@ -32,7 +32,7 @@ namespace ASM_APP_DEV.Controllers
             category.CategoryStatus = CategoryStatus.Unconfirmed;
             dbContext.Categories.Add(category);
             dbContext.SaveChanges();
-            return RedirectToAction("Index","Books");
+            return RedirectToAction("Index", "Books");
         }
     }
 }
