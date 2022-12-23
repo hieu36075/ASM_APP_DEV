@@ -1,22 +1,33 @@
-﻿@model IEnumerable<ASM_APP_DEV.Models.Category>
+﻿@model IEnumerable<ASM_APP_DEV.Models.Book>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "IndexAdmin";
 }
 
-
-
 <p>
+    
     <a asp-action="Create" type="button" class="btn button-56" style = "width: 20%; margin-left: 40%">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NameCategory)
+                @Html.DisplayNameFor(model => model.NameBook)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryStatus)
+                @Html.DisplayNameFor(model => model.QuantityBook)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceBook)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InformationBook)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th></th>
         </tr>
@@ -25,18 +36,33 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NameCategory)
+                @Html.DisplayFor(modelItem => item.NameBook)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryStatus)
+                @Html.DisplayFor(modelItem => item.QuantityBook)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.PriceBook)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InformationBook)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
 <style>
 /* CSS */
 .button-56 {

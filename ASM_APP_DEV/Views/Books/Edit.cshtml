@@ -11,11 +11,7 @@
     <form class="row container-fluid" asp-action="Edit">
     <div class="col-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdCategory" class="control-label">Category</label>
-                <input asp-for="IdCategory" class="form-control" />
-                <span asp-validation-for="IdCategory" class="text-danger"></span>
-            </div>
+ 
             <div class= "form-group">
                 <label asp-for="NameBook" class="control-label">Name Book</label>
                 <input asp-for="NameBook" class="form-control" />
@@ -46,8 +42,13 @@
                 <input asp-for="CreateAt" class="form-control" />
                 <span asp-validation-for="CreateAt" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Image Link</label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
             <div class="form-group" >
-                <input type="submit" value="Update" class="btn btn-primary" style="margin-left: 87%"/>
+                <input type="submit" value="Update" class="btn btn-primary" style="margin-left: 85%"/>
             </div>
         </form>
         </div>
@@ -55,9 +56,8 @@
 </div>
 
 <div>
-    <div class = container>
-    <button type="button" class="btn btn-outline-primary"  
-    <a asp-action="Index">Back to List</a>
+    <div class = container>  
+    <a asp-controller="Books" asp-action="IndexAdmin" type="button" class="btn btn-outline-primary">Back to List</a>
     </button>
     </div>
 </div>

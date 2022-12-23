@@ -1,4 +1,6 @@
 ﻿using ASM_APP_DEV.Data;
+using ASM_APP_DEV.Enums;
+using ASM_APP_DEV.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -23,6 +25,14 @@ namespace ASM_APP_DEV.Controllers
         {
 
             return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Category category)
+        {
+            category.CategoryStatus = CategoryStatus.Unconfirmed;
+            dbContext.Categories.Add(category);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index","Books");
         }
     }
 }

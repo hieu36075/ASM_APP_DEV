@@ -12,7 +12,7 @@
 
 
 
-<div class="container" style = "width: 600px">
+<div class="container" style = "width: 600px; box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px; margin-top: 10% ">
   
     <div class="card mb-4">
       <div class="card-header py-3">
@@ -28,16 +28,9 @@
                 <span asp-validation-for="NameCategory" class="text-danger"></span>
           </div>
 
-          <!-- Text input -->
-          <div class="form-outline mb-4">
-            <label asp-for="CategoryStatus" class="control-label">Status</label>
-                <select asp-for="CategoryStatus" class="form-control"></select>
-                <span asp-validation-for="CategoryStatus" class="text-danger"></span>
-          </div>
-
           <!-- Checkbox -->
           <div class="form-outline mb-4">
-            <input type="submit" value="Create" class="btn btn-primary container-fluid" />
+            <input type="submit" asp-action="Create" value="Create" class="btn btn-primary container-fluid" />
             
           </div>
         </form>

@@ -1,9 +1,11 @@
-﻿@model ASM_APP_DEV.Models.Book
-
+﻿@using ASM_APP_DEV.ViewModels
+@model CategoriesBookViewModel
 @{
     ViewData["Title"] = "Create";
 }
-
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
+integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
 
 
@@ -12,53 +14,53 @@
 
 
 <hr />
-<div class="row">
+<div class="row" style = " box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px">
     <form class="row container-fluid" asp-action="Create">
 
     <div class="col-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdCategory" class="control-label">Category</label>
-                <input asp-for="IdCategory" class="form-control" />
-                <span asp-validation-for="IdCategory" class="text-danger"></span>
-            </div>
+            
             <div class= "form-group">
-                <label asp-for="NameBook" class="control-label">Name Book</label>
-                <input asp-for="NameBook" class="form-control" />
-                <span asp-validation-for="NameBook" class="text-danger"></span>
+                <label Model.Book.NameBook" class="control-label">Name Book</label>
+                <input asp-for="Book.NameBook" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="QuantityBook" class="control-label">Quantity</label>
-                <input asp-for="QuantityBook" class="form-control" />
-                <span asp-validation-for="QuantityBook" class="text-danger"></span>
+                <label Model.Book.QuantityBook" class="control-label">Quantity</label>
+                <input asp-for="Book.QuantityBook" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="PriceBook" class="control-label">Price</label>
-                <input asp-for="PriceBook" class="form-control" />
-                <span asp-validation-for="PriceBook" class="text-danger"></span>
+                <label Model.Book.PriceBook" class="control-label">Price</label>
+                <input asp-for="Book.PriceBook" class="form-control" />
+            </div>
+            <div class="form-group dropdown">
+
+                <div class="form-group">
+                    <label class="control-label">Category</label>
+                <select asp-for ="Book.IdCategory" 
+                asp-items="@(new SelectList(Model.Categories,"Id", "NameCategory"))" 
+                class="form-control">
+            </select>
+             </div>
             </div>
             </div>
             <div class="col-6">
             
-            <div class="form-group">
+              <div class="form-group">
                 
-                <label asp-for="InformationBook" class="control-label">Information</label>
-                <textarea class="form-control" style="height: 7.7rem"  asp-for="InformationBook"></textarea>
-                <span asp-validation-for="InformationBook" class="text-danger"></span>
+                <label Model.Book.InformationBook" class="control-label">Information</label>
+                <textarea  asp-for="Book.PriceBook"  class="form-control" style="height: 7.7rem"  Model.Book.InformationBook"></textarea>
 
             </div>
             <div class="form-group" style="width: 40%">
-                <label asp-for="CreateAt" class="control-label">Create At</label>
-                <input asp-for="CreateAt" class="form-control" />
-                <span asp-validation-for="CreateAt" class="text-danger"></span>
+                <label Model.Book.CreateAt" class="control-label">Create At</label>
+                <input asp-for="Book.CreateAt" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label">Image</label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <label Model.Book.Image" class="control-label">Image Link</label>
+                <input asp-for="Book.Image" class="form-control" />
             </div>
             <div class="form-group" >
-                <input type="submit" value="Create" class="btn btn-primary" style="margin-left: 87%"/>
+                <input type="submit" value="Create" class="btn button-28" style=""/>
             </div>
         </form>
         </div>
@@ -67,12 +69,61 @@
 
 <div>
     <div class = container>
-    <button type="button" class="btn btn-outline-primary"  
-    <a asp-action="Index">Back to List</a>
-    </button>
+    <a asp-controller="Books" asp-action="IndexAdmin" type="button" 
+    class="btn btn-outline-primary" style = "margin-top: 5%;
+    margin-bottom: 2%">Back to List</a>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+<style>
+/* CSS */
+.button-28 {
+    appearance: none;
+    margin-left: 42%;
+    background-color: transparent;
+    border: 2px solid #1A1A1A;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #3B3B3B;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 15px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 35px;
+    min-width: 0;
+    outline: none;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 20%;
+    will-change: transform;
+}
+
+.button-28:disabled {
+  pointer-events: none;
+}
+
+.button-28:hover {
+  color: #fff;
+  background-color: #1A1A1A;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.button-28:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+</style>

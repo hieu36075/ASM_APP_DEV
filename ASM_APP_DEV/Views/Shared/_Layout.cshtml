@@ -39,14 +39,11 @@
                         }
                             @if (User.IsInRole("storeOwner"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Create">Create Book</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Edit">Edit</a>
-                            </li>
                               <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Create">Edit</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="IndexAdmin">Manage Book</a>
+                            </li>
+                               <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Manage Category</a>
                             </li>
                         }
                     </ul>
