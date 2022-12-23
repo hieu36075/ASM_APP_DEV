@@ -32,7 +32,9 @@ namespace ASM_APP_DEV
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+			
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 		}

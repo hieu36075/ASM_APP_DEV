@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ASM_APP_DEV.Data.Migrations
+namespace ASM_APP_DEV.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -94,12 +94,9 @@ namespace ASM_APP_DEV.Data.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -234,6 +231,29 @@ namespace ASM_APP_DEV.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            ConcurrencyStamp = "1",
+                            Name = "user",
+                            NormalizedName = "user"
+                        },
+                        new
+                        {
+                            Id = "fab4fac1-c546-41de-aebc-a14da6895720",
+                            ConcurrencyStamp = "2",
+                            Name = "storeOwner",
+                            NormalizedName = "storeOwner"
+                        },
+                        new
+                        {
+                            Id = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            ConcurrencyStamp = "3",
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -353,7 +373,7 @@ namespace ASM_APP_DEV.Data.Migrations
 
             modelBuilder.Entity("ASM_APP_DEV.Models.Order", b =>
                 {
-                    b.HasOne("ASM_APP_DEV.Models.User", null)
+                    b.HasOne("ASM_APP_DEV.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
                 });
