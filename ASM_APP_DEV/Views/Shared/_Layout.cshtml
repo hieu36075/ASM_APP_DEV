@@ -6,6 +6,9 @@
     <title>FPTBook</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
     <header>
@@ -36,17 +39,16 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="OrderDetails" asp-action="Index">Cart</a>
                             </li>
-                        }
-                            @if (User.IsInRole("storeOwner"))
-                        {
-                              <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="IndexAdmin">Manage Book</a>
+                            <li>
+                                <form asp-action="Index" asp-controller="Books" method="get">
+                                    <input type="text" name="SearchString" placeholder="Search by Name Or Category" />
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </form>
                             </li>
-                               <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Manage Category</a>
-                            </li>
+            
                         }
                     </ul>
+
                 </div>
             </div>
         </nav>
@@ -68,3 +70,4 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+

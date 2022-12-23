@@ -3,7 +3,8 @@
 *@
 @{
 }
-@model IEnumerable<OrderDetail>
+@using ASM_APP_DEV.ViewModel
+@model ViewModelCart
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,10 +12,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap Order Details Table with Search Filter</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+@*    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -24,93 +25,99 @@
         <a asp-controller="Orders" asp-action="Index" class="" title="View Details" data-toggle="tooltip"><i class="btn btn-info">Order List</i></a>
     <div class="container">
         <!-- Title -->
-        <div class="d-flex justify-content-between align-items-center py-3">
+        <div class="d-flex justify-content-between align-Model.OrderDetails[i]s-center py-3">
             <h2 class="h5 mb-0"><a href="#" class="text-muted"></a> Order Details</h2>
         </div>
+            <input asp-for="@Model.Order.Id" type="hidden" value="@Model.Order.Id"/>
 
         <!-- Main content -->
         <div class="row">
-            @foreach (var item in Model)
-            {
-            <div class="col-lg-8">
-                <!-- Details -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="mb-3 d-flex justify-content-between">
-                            <div>
-                                <span class="me-3">@item.Order.DateOrder</span>
-                                <span class="me-3">#@item.Order.Id</span>
-                                
-                                <span class="badge rounded-pill bg-info">SHIPPING</span>
-                            </div>
-                            <div class="d-flex">
-                                    <a asp-controller="OrderDetails" asp-action="Delete" class="" title="Delete" data-toggle="tooltip"><i class="material-icons">delete</i></a>
-                                <button class="btn btn-link p-0 me-3 d-none d-lg-block btn-icon-text"><i class="bi bi-download"></i> <span class="text">Invoice</span></button>
-                                <div class="dropdown">
-                                    <button class="btn btn-link p-0 text-muted" type="button" data-bs-toggle="dropdown">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil"></i> Edit</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="bi bi-printer"></i> Print</a></li>
-                                    </ul>
+                @if (Model.OrderDetails.Count() != 0)
+                {
+                    @for(int i = 0; i < Model.OrderDetails.Count(); i++)
+                    {
+                        <div class="col-lg-8">
+                            <!-- Details -->
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="mb-3 d-flex justify-content-between">
+                                        <div class="d-flex">
+                                            <div class="dropdown">
+                                                <button class="btn btn-link p-0 text-muted" type="button" data-bs-toggle="dropdown">
+                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><a class="dropdown-Model.OrderDetails[i]" href="#"><i class="bi bi-pencil"></i> Edit</a></li>
+                                                    <li><a class="dropdown-Model.OrderDetails[i]" href="#"><i class="bi bi-printer"></i> Print</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                            <tr>
+                                                <td> Name Book</td>
+                                                <td> Quantity</td>
+                                                <td> Price</td>
+                                                <td> Action</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex mb-2">
+                                                        <img src="@Model.OrderDetails[i].Book.Image" alt="" width="60" class="img-fluid">
+                                                        <div class="flex-lg-grow-1 ms-3">
+                                                            <h6 class="small mb-0"><a href="#" class="text-reset">@Model.OrderDetails[i].Book.NameBook</a></h6>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input asp-for="@Model.OrderDetails[i].Id" type="hidden" value="@Model.OrderDetails[i].Id" id="id @Model.OrderDetails[i].Id" />
+                                                    <input asp-for="@Model.OrderDetails[i].Price" type="hidden" value="@Model.OrderDetails[i].Price" id="price @Model.OrderDetails[i].Id" />
+                                                    <input asp-for="@Model.OrderDetails[i].Quantity" type="hidden" value="@Model.OrderDetails[i].Quantity" id="quantityOld @Model.OrderDetails[i].Id" />
+
+                                                    <input asp-for="@Model.OrderDetails[i].Quantity" style="width: 68px !important" id="quantity @Model.OrderDetails[i].Id" value="@Model.OrderDetails[i].Quantity"
+                                               onchange="refresh(
+                                                        document.getElementById('quantityOld @Model.OrderDetails[i].Id').value,
+                                                        document.getElementById('quantity @Model.OrderDetails[i].Id').value,
+                                                        document.getElementById('price @Model.OrderDetails[i].Id').value,
+                                                        document.getElementById('id @Model.OrderDetails[i].Id').value)" />
+                                                </td>
+
+                                                <td class="text-end" id="demo @Model.OrderDetails[i].Id">@Model.OrderDetails[i].Price</td>
+                                                <td><a asp-controller="OrderDetails" asp-action="Delete" asp-route-id=@Model.OrderDetails[i].Id class="" title="Delete" data-toggle="tooltip"><i class="material-icons">delete</i></a></td>
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex mb-2">
-                                            <div class="flex-shrink-0">
-                                                <img src="@item.Book.Image" alt="" width="35" class="img-fluid">
-                                            </div>
-                                            <div class="flex-lg-grow-1 ms-3">
-                                                <h6 class="small mb-0"><a href="#" class="text-reset">@item.Book.NameBook</a></h6>
-                                            </div>
-                                        </div>
-                                    </td>
-											<td>
-												<input asp-for="@item.Id" type="hidden" value="@item.Id" id="id @item.Id" />
-                                                <input asp-for="@item.Price" type="hidden" value="@item.Price" id="price @item.Id" />
-                                                <input asp-for="@item.Quantity" type="hidden" value="@item.Quantity" id="quantityOld @item.Id" />
-
-                                                <input asp-for="@item.Quantity" style="width: 68px !important" id="quantity @item.Id" value="@item.Quantity"
-                                               onchange="refresh(
-                                                        document.getElementById('quantityOld @item.Id').value,
-                                                        document.getElementById('quantity @item.Id').value,
-                                                        document.getElementById('price @item.Id').value,
-                                                        document.getElementById('id @item.Id').value)" />
-                                            </td>
-
-                                            <td class="text-end" id="demo @item.Id">@item.Price</td>
-                                </tr>
-                            </tbody>
-                             
-                        </table>
-                          
-                    </div>
-                </div>
-            </div>
-            }
-            <div class="col-lg-4">
+                    }
+                }
+                else
+                {
+                    <h1> This Card is Emplty </h1>
+					<a asp-controller="Books" asp-action="Index" class="" title="Books" data-toggle="tooltip"><i class="material-icons">button</i></a>
+                }
+                <div class="col-lg-4">
                 <div class="card mb-4">
                     <!-- Shipping information -->
                     <div class="card-body">
                         <h3 class="h6">Address</h3>
                             <address>
                                 <strong>
-                                    @ViewBag.User.FullName
+                                    @Model.FullName
                                 </strong>
                                 <br>
-                                    @ViewBag.User.Address<br>
-                                <abbr title="Phone">@ViewBag.User.PhoneNumber</abbr>
+                                    @Model.Address<br>
+                                <abbr title="Phone">@Model.Phone</abbr>
                             </address>
                         <hr>
-                             <h3 class="h6">Payment Method</h3>
+                             <h3 class="h6">Total Price</h3>
                                     <p>
-                                        Visa -1234 <br>
-                                        Total: $169,98 <span class="badge bg-success rounded-pill">PAID</span>
+                                            @Model.Order.PriceOrder VND$
                                     </p>
                     </div>
                         <a asp-controller="Orders" asp-action="Index" class="" title="View Details" data-toggle="tooltip"><i class="btn btn-info">Buy</i></a>

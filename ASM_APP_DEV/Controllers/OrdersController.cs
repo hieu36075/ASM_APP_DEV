@@ -1,6 +1,7 @@
 ﻿using ASM_APP_DEV.Data;
 using ASM_APP_DEV.Enums;
 using ASM_APP_DEV.Models;
+using ASM_APP_DEV.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -105,6 +106,12 @@ namespace ASM_APP_DEV.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult Buy(ViewModelCart viewModelCart)
+        {
+
+            return View();
+        }
       
     }
 }

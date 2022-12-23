@@ -1,13 +1,14 @@
 ﻿using ASM_APP_DEV.Data;
-using ASM_APP_DEV.Enums;
 using ASM_APP_DEV.Models;
-using ASM_APP_DEV.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ASM_APP_DEV.Controllers
 {
@@ -20,20 +21,22 @@ namespace ASM_APP_DEV.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Index()
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> Index(string SearchString)
         {
-            //var booksInDb = _dbContext.Books.ToList();
-            IEnumerable<Book> booksInDb = _context.Books.ToList();
+            if (!String.IsNullOrEmpty(SearchString))
+            {
 
-            return View(booksInDb);
-        }
-        [HttpGet]
-        public IActionResult IndexAdmin()
-        {
-            //var booksInDb = _dbContext.Books.ToList();
-            IEnumerable<Book> booksInDb = _context.Books.ToList();
+                var books = _context.Books.Where(s => s.NameBook.Contains(SearchString));
+                return View(await books.ToListAsync());
 
-            return View(booksInDb);
+            }
+            else
+            {
+                var books = _context.Books.ToList();
+                return View(books);
+            }
+           
         }
         [HttpGet]
         public IActionResult Detail(int id)
@@ -43,44 +46,41 @@ namespace ASM_APP_DEV.Controllers
             return View(bookInDb);
         }
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            var categoriesInDb = _context.Categories.Where(c => c.CategoryStatus == CategoryStatus.Successful).ToList();
-            CategoriesBookViewModel categoryBook = new CategoriesBookViewModel();
-            categoryBook.Categories = categoriesInDb;
-            return View(categoryBook);
-        }
+
         [HttpPost]
         public IActionResult Create(Book book)
         {
-            _context.Add(book);
+
+            var newBook = new Book();
+            newBook.NameBook = book.NameBook;
+            newBook.InformationBook = book.InformationBook;
+            newBook.QuantityBook = book.QuantityBook;
+            newBook.PriceBook = book.PriceBook;
+
+
+            _context.Add(newBook);
             _context.SaveChanges();
+
+
             return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int id) {
-            var bookInDb = _context.Books.SingleOrDefault(b => b.Id == id);
-
-            return View(bookInDb);
         }
         [HttpPost]
         public IActionResult Edit(Book book)
         {
 
-            var bookInDb = _context.Books.SingleOrDefault(b => b.Id == book.Id);
-            bookInDb.NameBook = book.NameBook;
-            bookInDb.PriceBook = book.PriceBook;
-            bookInDb.Image = book.Image;
-            bookInDb.InformationBook = book.InformationBook;
-            bookInDb.QuantityBook = book.QuantityBook;
+            var newBook = new Book();
+            newBook.NameBook = book.NameBook;
+            newBook.InformationBook = book.InformationBook;
+            newBook.QuantityBook = book.QuantityBook;
+            newBook.PriceBook = book.PriceBook;
 
-            _context.Update(bookInDb);
+
+            _context.Add(newBook);
             _context.SaveChanges();
 
 
             return RedirectToAction("Index");
         }
+
     }
 }
