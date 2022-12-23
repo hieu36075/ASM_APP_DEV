@@ -4,35 +4,51 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NameCategory" class="control-label"></label>
-                <input asp-for="NameCategory" class="form-control" />
-                <span asp-validation-for="NameCategory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryStatus" class="control-label"></label>
-                <select asp-for="CategoryStatus" class="form-control"></select>
-                <span asp-validation-for="CategoryStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+
+
+<div class="container" style = "width: 600px">
+  
+    <div class="card mb-4">
+      <div class="card-header py-3">
+        <h2 class="mb-0" style = "margin-left: 29%">Create Category</h2>
+      </div>
+      <div class="card-body">
+        <form asp-action="Create">
+          <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          <!-- Text input -->
+          <div class="form-outline mb-4">
+            <label asp-for="NameCategory" class="control-label">Category</label>
+                <input asp-for="NameCategory" class="form-control" />
+                <span asp-validation-for="NameCategory" class="text-danger"></span>
+          </div>
+
+          <!-- Text input -->
+          <div class="form-outline mb-4">
+            <label asp-for="CategoryStatus" class="control-label">Status</label>
+                <select asp-for="CategoryStatus" class="form-control"></select>
+                <span asp-validation-for="CategoryStatus" class="text-danger"></span>
+          </div>
+
+          <!-- Checkbox -->
+          <div class="form-outline mb-4">
+            <input type="submit" value="Create" class="btn btn-primary container-fluid" />
+            
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class = container>
+    <button type="button" class="btn btn-outline-primary"  
+    <a asp-action="Index">Back to List</a>
+    </button>
+    </div>
+</div>

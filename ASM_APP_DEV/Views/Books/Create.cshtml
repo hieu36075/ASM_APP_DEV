@@ -4,58 +4,75 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+
+
+
+
+<h1 style="margin-left: 38%" >Create Books</h1>
+
+
+<hr />
+<div class="row">
+    <form class="row container-fluid" asp-action="Create">
+
+    <div class="col-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdCategory" class="control-label">Category</label>
+                <input asp-for="IdCategory" class="form-control" />
+                <span asp-validation-for="IdCategory" class="text-danger"></span>
+            </div>
+            <div class= "form-group">
+                <label asp-for="NameBook" class="control-label">Name Book</label>
+                <input asp-for="NameBook" class="form-control" />
+                <span asp-validation-for="NameBook" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantityBook" class="control-label">Quantity</label>
+                <input asp-for="QuantityBook" class="form-control" />
+                <span asp-validation-for="QuantityBook" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceBook" class="control-label">Price</label>
+                <input asp-for="PriceBook" class="form-control" />
+                <span asp-validation-for="PriceBook" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col-6">
+            
+            <div class="form-group">
+                
+                <label asp-for="InformationBook" class="control-label">Information</label>
+                <textarea class="form-control" style="height: 7.7rem"  asp-for="InformationBook"></textarea>
+                <span asp-validation-for="InformationBook" class="text-danger"></span>
+
+            </div>
+            <div class="form-group" style="width: 40%">
+                <label asp-for="CreateAt" class="control-label">Create At</label>
+                <input asp-for="CreateAt" class="form-control" />
+                <span asp-validation-for="CreateAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Image</label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group" >
+                <input type="submit" value="Create" class="btn btn-primary" style="margin-left: 87%"/>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 
 <div>
-    <h4>Book</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdCategory)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdCategory)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NameBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NameBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuantityBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuantityBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PriceBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PriceBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InformationBook)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InformationBook)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-    </dl>
-    
-    <form asp-action="Create">
-        <input type="hidden" asp-for="Id" />
-        <a asp-action="Index">Back to List</a>
-    </form>
+    <div class = container>
+    <button type="button" class="btn btn-outline-primary"  
+    <a asp-action="Index">Back to List</a>
+    </button>
+    </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

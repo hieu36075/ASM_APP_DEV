@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ASM_APP_DEV.Controllers
 {
-    
+
     public class BooksController : Controller
     {
         private ApplicationDbContext _context;
@@ -33,10 +33,14 @@ namespace ASM_APP_DEV.Controllers
             return View(bookInDb);
         }
 
-
-		[HttpPost]
-		public IActionResult Create(Book book)
-		{
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Book book)
+        {
 
             var newBook = new Book();
             newBook.NameBook = book.NameBook;
@@ -49,8 +53,13 @@ namespace ASM_APP_DEV.Controllers
             _context.SaveChanges();
 
 
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit() {
+            return View();
+}
         [HttpPost]
         public IActionResult Edit(Book book)
         {
