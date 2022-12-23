@@ -61,8 +61,12 @@
             <span >@item.NameBook</span>
           </h5>
           <div class="d-grid gap-2 my-4">
-          <a asp-controller="Orders" asp-action="Create" asp-route-id =@item.Id class="btn btn-warning bold-btn">Add To Card</a>
-          <a asp-action="Detail" asp-route-id=@item.Id class="btn btn-warning bold-btn">Detail</a>
+
+             @if(User.IsInRole("user")){
+                <a asp-controller="Orders" asp-action="Create" asp-route-id =@item.Id class="btn btn-warning bold-btn">Add To Card</a>
+
+                <a asp-action="Detail" asp-route-id=@item.Id class="btn btn-warning bold-btn">Detail</a>
+             }
 
           </div>
           <div class="clearfix mb-1">
