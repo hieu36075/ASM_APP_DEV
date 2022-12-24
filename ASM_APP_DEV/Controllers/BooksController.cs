@@ -23,7 +23,6 @@ namespace ASM_APP_DEV.Controllers
             _context = context;
         }
         [HttpGet]
-        [Authorize(Roles = "user")]
         public async Task<IActionResult> Index(string SearchString)
         {
             if (!String.IsNullOrEmpty(SearchString))
@@ -60,7 +59,6 @@ namespace ASM_APP_DEV.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
             var categoriesInDb = _context.Categories.Where(c => c.CategoryStatus == CategoryStatus.Successful).ToList();
             CategoriesBookViewModel categoryBook = new CategoriesBookViewModel();
             categoryBook.Categories = categoriesInDb;

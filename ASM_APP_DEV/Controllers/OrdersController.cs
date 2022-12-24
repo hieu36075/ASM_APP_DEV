@@ -24,9 +24,11 @@ namespace ASM_APP_DEV.Controllers
 
             this.context = context;
 		}
-		public IActionResult Index()
+		public async Task<IActionResult> IndexAsync()
         {
-			var oderInDb = context.Orders.ToList();
+            var currentUser = await userManager.GetUserAsync(User);
+
+            var oderInDb = context.Orders.Where(o => o.UserId == currentUser.Id ).ToList();
             return View(oderInDb);
 
         }
@@ -40,8 +42,13 @@ namespace ASM_APP_DEV.Controllers
                 .SingleOrDefault(o => o.OrderStatus == OrderStatus.Unconfirmed && o.UserId == currentUser.Id);
 
             Book bookInDB = context.Books.SingleOrDefault(t => t.Id == id);
-            if (orderUnconfirmInDb == null)
+			if (bookInDB.QuantityBook - 1 < 0)
+			{
+				return BadRequest();
+			}
+			if (orderUnconfirmInDb == null)
             {
+                
                 var order = new Order();
                 order.UserId = currentUser.Id;
                 order.OrderStatus = Enums.OrderStatus.Unconfirmed;
@@ -58,7 +65,7 @@ namespace ASM_APP_DEV.Controllers
                 orderDetail.Order = order;
                 orderDetail.Book = bookInDB;
 
-                context.OrderDetails.Add(orderDetail);
+                context.Add(orderDetail);
                 context.SaveChanges();
                 order.OrderDetails.Add(orderDetail);
 				context.SaveChanges();
@@ -74,13 +81,13 @@ namespace ASM_APP_DEV.Controllers
                 orderDetail.IdBook = bookInDB.Id;
                 orderDetail.IdOrder = orderUnconfirmInDb.Id;
                 orderDetail.Quantity = 1;
+                    orderDetail.Price = bookInDB.PriceBook;
                 orderUnconfirmInDb.OrderDetails.Add(orderDetail);
                     context.Add(orderDetail);
                     context.SaveChanges();
-
+                    orderUnconfirmInDb.PriceOrder = 0;
                     foreach (var item in orderUnconfirmInDb.OrderDetails)
                     {
-                        orderUnconfirmInDb.PriceOrder = 0;
 
                         orderUnconfirmInDb.PriceOrder += item.Price;
                     }
@@ -89,10 +96,10 @@ namespace ASM_APP_DEV.Controllers
                 {
                     orderDetailInDb.Quantity += 1;
                     orderDetailInDb.Price = bookInDB.PriceBook * orderDetailInDb.Quantity;
-
+                    orderUnconfirmInDb.PriceOrder = 0;
                     foreach (var orderDetail in orderUnconfirmInDb.OrderDetails)
                     {
-                        orderUnconfirmInDb.PriceOrder = 0;
+                       
                         orderUnconfirmInDb.PriceOrder += orderDetail.Price;
                     }
                 }
@@ -106,12 +113,6 @@ namespace ASM_APP_DEV.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult Buy(ViewModelCart viewModelCart)
-        {
-
-            return View();
-        }
       
     }
 }

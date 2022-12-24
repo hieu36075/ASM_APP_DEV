@@ -71,9 +71,9 @@
 								<td style="display: flex">
 									@if (item.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
 									{
-										<a asp-controller="OrderDetails" asp-action="Create" class="" title="Edit" data-toggle="tooltip"><i class="material-icons">create</i></a>
+									<a asp-controller="OrderDetails" asp-action="Index" asp-route-id="@item.Id" class="" title="Edit" data-toggle="tooltip"><i class="material-icons">create</i></a>
 									}
-									<a asp-controller="OrderDetails" asp-action="Index" class="" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
+									<a asp-controller="OrderDetails" asp-action="Index" asp-route-id="@item.Id" class="" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE5C8;</i></a>
 								</td>
 
 							</tr>

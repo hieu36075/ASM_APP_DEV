@@ -25,27 +25,39 @@ namespace ASM_APP_DEV.Controllers
 		{
 			var viewModelCart = new ViewModelCart();
 			var currentUser = await userManager.GetUserAsync(User);
-
-   //         if (id != 0)
-			//{
-			//	 orderDetails = context.OrderDetails.Include(t => t.Order).Include(b => b.Book)
-			//				  .Where(t => t.Order.UserId == currentUser.Id).ToList();
-			//}
-			//else { 
-			var	 orderDetails = context.OrderDetails.Include(t => t.Order)
-					.Where(t => t.Order.OrderStatus == Enums.OrderStatus.Unconfirmed).ToList();
-			//}
-			foreach(var item in orderDetails)
+            viewModelCart.Address = currentUser.Address;
+            viewModelCart.FullName = currentUser.FullName;
+            viewModelCart.Phone = currentUser.PhoneNumber;
+            if (id != 0)
 			{
-				item.Book = context.Books.SingleOrDefault(b => b.Id == item.IdBook);
-			}
-			
+                var Order = context.Orders.SingleOrDefault(o => o.Id == id && o.UserId == currentUser.Id);
 
-			viewModelCart.Address = currentUser.Address;
-			viewModelCart.FullName = currentUser.FullName;
-			viewModelCart.Phone = currentUser.PhoneNumber;
-			viewModelCart.OrderDetails = orderDetails;
-			viewModelCart.Order = orderDetails[0].Order;
+                var orderDetails = context.OrderDetails
+							 .Where(t => t.Order.UserId == currentUser.Id && t.Order.Id == id).ToList();
+                foreach (var item in orderDetails)
+                {
+                    item.Book = context.Books.SingleOrDefault(b => b.Id == item.IdBook);
+                }
+                viewModelCart.OrderDetails = orderDetails;
+                viewModelCart.Order = Order;
+
+                return View(viewModelCart);
+			}
+			else
+			{
+				var orderDetails = context.OrderDetails.Include(t => t.Order)
+					.Where(t => t.Order.OrderStatus == Enums.OrderStatus.Unconfirmed).ToList();
+
+				var Order = context.Orders.SingleOrDefault(o => o.OrderStatus == OrderStatus.Unconfirmed && o.UserId == currentUser.Id);
+				foreach (var item in orderDetails)
+				{
+					item.Book = context.Books.SingleOrDefault(b => b.Id == item.IdBook);
+				}
+
+
+				viewModelCart.OrderDetails = orderDetails;
+				viewModelCart.Order = Order;
+			}
             return View(viewModelCart);
 
 		}
@@ -61,10 +73,32 @@ namespace ASM_APP_DEV.Controllers
             return RedirectToAction("Index");
         }
 
-		public IActionResult BuyBooks()
+		public IActionResult BuyBooks(ViewModelCart viewModelCart)
 		{
+            viewModelCart.Order.PriceOrder = 0;
+			
+            foreach (var item in viewModelCart.OrderDetails)
+			{
+				var orderDetail = context.OrderDetails.SingleOrDefault(o => o.Id==item.Id);
+				orderDetail.Quantity= item.Quantity;
+				orderDetail.Price = item.Book.PriceBook * item.Quantity;
 
-			return View();
+				Book bookInDb = context.Books.FirstOrDefault(b => b.Id == item.IdBook);
+				bookInDb.QuantityBook = bookInDb.QuantityBook - orderDetail.Quantity;
+                context.Update(bookInDb);
+
+                context.Update(orderDetail);
+				viewModelCart.Order.PriceOrder += orderDetail.Price;
+				context.SaveChanges();
+
+			}
+            var orderInDb = context.Orders.SingleOrDefault(o => o.Id == viewModelCart.Order.Id);
+			orderInDb.PriceOrder = viewModelCart.Order.PriceOrder;
+			orderInDb.OrderStatus = OrderStatus.InProgress;
+			context.Update(orderInDb);
+            context.SaveChanges();
+
+            return RedirectToAction("Index", "Orders");
 		}
     }
 }
