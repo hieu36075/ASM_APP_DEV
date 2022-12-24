@@ -100,6 +100,12 @@ namespace ASM_APP_DEV.Controllers
 
             return RedirectToAction("Index");
         }
-
+        public IActionResult Delete(int id)
+        {
+            var bookInDb = _context.Books.FirstOrDefault(c => c.Id == id);
+            _context.Remove(bookInDb);
+            _context.SaveChanges();
+            return RedirectToAction("IndexAdmin", "Books");
+        }
     }
 }
