@@ -6,6 +6,7 @@ namespace ASM_APP_DEV.Models
     public class Book
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
         public int IdCategory { get; set; }
         public string NameBook { get; set; }
         public int QuantityBook { get; set; }

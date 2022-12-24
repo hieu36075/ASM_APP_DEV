@@ -56,8 +56,10 @@
 
                             @if (Model.OrderDetails[i].Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
                             {
+                                <input type="hidden" value="@Model.OrderDetails[i].Quantity" id="quantityOld @Model.OrderDetails[i].Id" />
                                 <input asp-for="@Model.OrderDetails[i].Quantity" style="width: 68px !important" id="quantity @Model.OrderDetails[i].Id" value="@Model.OrderDetails[i].Quantity"
                            onchange="refresh(
+                            document.getElementById('quantityOld @Model.OrderDetails[i].Id').value,
                             document.getElementById('quantity @Model.OrderDetails[i].Id').value,
                             document.getElementById('price @Model.OrderDetails[i].Id').value,
                             document.getElementById('id @Model.OrderDetails[i].Id').value)" />
@@ -74,12 +76,11 @@
 
                         </td>
                         <td>
-                            <a asp-controller="Products" asp-action="Detail" asp-route-id="@Model.OrderDetails[i].IdBook">View Product</a>
+                            <a asp-controller="Books" asp-action="Detail" asp-route-id="@Model.OrderDetails[i].IdBook">View Books</a>
                           @if (Model.OrderDetails[i].Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
-                    {
-                        <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id="@Model.OrderDetails[i].Id">| Delete</a>
-                       
-                    }
+                                {
+                                    <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id="@Model.OrderDetails[i].Id">Delete</a>
+                                }
                         </td>
 
                     </tr>
@@ -107,7 +108,7 @@
                 </div>
                 <div class="p-2 d-flex">
                     <div class="col-8">Number Phone</div>
-                    <div class="ms-auto">0912256419</div>
+                    <div class="ms-auto">@Model.Phone</div>
                 </div>
 
                 <div class="border-top px-2 mx-2"></div>
@@ -116,8 +117,13 @@
                     <div class="ms-auto"><b class="text-success">@Model.Order.PriceOrder VND</b></div>
                 </div>
 
-             
-                    <button type="submit" class="btn btn-info">Purchase</button>
+                @if(Model.Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed){
+                    <a type="submit" class="btn btn-info">Purchase</a>
+                }
+                else
+                {
+                    
+                }
             </div>
         </div>
     </form>
@@ -146,8 +152,11 @@ else
     </div>
 }
 <script>
-    function refresh(quantity, price, id) {
+    function refresh(quantityOld, quantity, price, id) {
+        var b = price / quantityOld;
         var a = 'demo ' + id;
-        document.getElementById(a).innerHTML = quantity * price;
+        document.getElementById(a).innerHTML = quantity * b;
     }
+
+
 </script>

@@ -83,9 +83,6 @@ namespace ASM_APP_DEV.Controllers
 				orderDetail.Quantity= item.Quantity;
 				orderDetail.Price = item.Book.PriceBook * item.Quantity;
 
-				Book bookInDb = context.Books.FirstOrDefault(b => b.Id == item.IdBook);
-				bookInDb.QuantityBook = bookInDb.QuantityBook - orderDetail.Quantity;
-                context.Update(bookInDb);
 
                 context.Update(orderDetail);
 				viewModelCart.Order.PriceOrder += orderDetail.Price;
