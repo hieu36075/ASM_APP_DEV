@@ -61,7 +61,6 @@ namespace ASM_APP_DEV.Controllers
                 orderDetail.IdBook = bookInDB.Id;
                 orderDetail.IdOrder = order.Id;
                 orderDetail.Quantity = 1;
-                bookInDB.QuantityBook -= 1;
                 orderDetail.Price = bookInDB.PriceBook;
                 orderDetail.Order = order;
                 orderDetail.Book = bookInDB;
@@ -82,7 +81,6 @@ namespace ASM_APP_DEV.Controllers
                 orderDetail.IdBook = bookInDB.Id;
                 orderDetail.IdOrder = orderUnconfirmInDb.Id;
                 orderDetail.Quantity = 1;
-                    bookInDB.QuantityBook -= 1;
 
                     orderDetail.Price = bookInDB.PriceBook;
                 orderUnconfirmInDb.OrderDetails.Add(orderDetail);
@@ -97,8 +95,7 @@ namespace ASM_APP_DEV.Controllers
                 }
                 else
                 {
-                    orderDetailInDb.Quantity += 1;
-                    bookInDB.QuantityBook -= 1;
+                    orderDetailInDb.Quantity += 
 
                     orderDetailInDb.Price = bookInDB.PriceBook * orderDetailInDb.Quantity;
                     orderUnconfirmInDb.PriceOrder = 0;

@@ -115,7 +115,12 @@ namespace ASM_APP_DEV.Controllers
         {
             var bookInDb = _context.Books.FirstOrDefault(c => c.Id == id);
             var orderDetailInDB = _context.OrderDetails.SingleOrDefault(b => b.IdBook== id);
-            _context.Remove(orderDetailInDB);
+
+            if(orderDetailInDB != null)
+            {
+                _context.Remove(orderDetailInDB);
+
+            }
             _context.Remove(bookInDb);
             _context.SaveChanges();
             return RedirectToAction("IndexAdmin", "Books");

@@ -54,19 +54,30 @@
                         </td>
                         <td>
 
-                            @if (Model.OrderDetails[i].Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
+                            @if (Model.OrderDetails[i].Order.OrderStatus != ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
                             {
-                                <input type="hidden" value="@Model.OrderDetails[i].Quantity" id="quantityOld @Model.OrderDetails[i].Id" />
-                                <input asp-for="@Model.OrderDetails[i].Quantity" style="width: 68px !important" id="quantity @Model.OrderDetails[i].Id" value="@Model.OrderDetails[i].Quantity"
-                           onchange="refresh(
-                            document.getElementById('quantityOld @Model.OrderDetails[i].Id').value,
-                            document.getElementById('quantity @Model.OrderDetails[i].Id').value,
-                            document.getElementById('price @Model.OrderDetails[i].Id').value,
-                            document.getElementById('id @Model.OrderDetails[i].Id').value)" />
+             
+                                                           @Html.DisplayFor(modelItem => Model.OrderDetails[i].Quantity)
+
                             }
                             else
                             {
+                                <input type="hidden" value="@Model.OrderDetails[i].Quantity" id="quantityBuy @Model.OrderDetails[i].Id" />
+                                <input type="hidden" value="@Model.OrderDetails[i].Book.QuantityBook" id="quantityBook @Model.OrderDetails[i].Id" />
+
+                                <a class="btn btn-primary bold-btn"
+                       onclick="trusoluong(
+                            document.getElementById('id @Model.OrderDetails[i].Id').value,
+                            document.getElementById('quantityBuy @Model.OrderDetails[i].Id').value)">-</a>
+
+                                <input asp-for="@Model.OrderDetails[i].Quantity" type = "hidden"/>
                                 @Html.DisplayFor(modelItem => Model.OrderDetails[i].Quantity)
+
+                                <a class="btn btn-primary bold-btn" onclick="congsoluong(
+                            document.getElementById('id @Model.OrderDetails[i].Id').value,
+                            document.getElementById('quantityBuy @Model.OrderDetails[i].Id').value,
+                            document.getElementById('quantityBook @Model.OrderDetails[i].Id').value )">+</a>
+
                             }
                         </td>
                         <td>
@@ -117,14 +128,13 @@
                     <div class="ms-auto"><b class="text-success">@Model.Order.PriceOrder VND</b></div>
                 </div>
 
-                @if(Model.Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed){
-                    <a type="submit" class="btn btn-info">Purchase</a>
-                }
-                else
-                {
-                    
-                }
-            </div>
+
+
+			</div> 
+            @if (Model.Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
+			{
+                <button type="submit" class="btn btn-info">Purchase</button>
+            }
         </div>
     </form>
 
@@ -152,11 +162,26 @@ else
     </div>
 }
 <script>
-    function refresh(quantityOld, quantity, price, id) {
-        var b = price / quantityOld;
-        var a = 'demo ' + id;
-        document.getElementById(a).innerHTML = quantity * b;
-    }
+    function congsoluong(id, quantityBuy, quantityBook) {
+        console.log(quantityBook);
+        console.log(quantityBuy ++);
+        if (quantityBuy ++ <= quantityBook) {
+            window.location.href = '@Url.Action("TangSoLuong", "OrderDetails")/' + id;
+        }
+        else{
 
+            alert('So luong lon hon trong database');
+        }
+    }
+    function trusoluong(id, quantityBuy) {
+        console.log(quantityBuy);
+
+        if (quantityBuy - 1 > 0) {
+            window.location.href = '@Url.Action("TruSoLuong", "OrderDetails")/' + id;
+        }
+        else{
+        alert('So luong phai khac 0');
+        }
+    }
 
 </script>

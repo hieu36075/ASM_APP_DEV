@@ -73,16 +73,18 @@ namespace ASM_APP_DEV.Controllers
             return RedirectToAction("Index");
         }
 
+		[HttpPost]
 		public IActionResult BuyBooks(ViewModelCart viewModelCart)
 		{
             viewModelCart.Order.PriceOrder = 0;
 			
             foreach (var item in viewModelCart.OrderDetails)
 			{
+				var bookInDb = context.Books.SingleOrDefault(b => b.Id == item.IdBook);
 				var orderDetail = context.OrderDetails.SingleOrDefault(o => o.Id==item.Id);
 				orderDetail.Quantity= item.Quantity;
 				orderDetail.Price = item.Book.PriceBook * item.Quantity;
-
+				bookInDb.QuantityBook -= orderDetail.Quantity;
 
                 context.Update(orderDetail);
 				viewModelCart.Order.PriceOrder += orderDetail.Price;
@@ -97,6 +99,45 @@ namespace ASM_APP_DEV.Controllers
 
             return RedirectToAction("Index", "Orders");
 		}
+
+		public IActionResult TangSoLuong(int id)
+		{
+			var orderDetail = context.OrderDetails.Include(o => o.Order).SingleOrDefault(o => o.Id==id);
+			var book = context.Books.SingleOrDefault(o => o.Id == orderDetail.IdBook);
+			orderDetail.Quantity += 1;
+			orderDetail.Price = book.PriceBook * orderDetail.Quantity;
+			context.Update(orderDetail);
+			orderDetail.Order.PriceOrder = 0;
+
+			foreach(var item in orderDetail.Order.OrderDetails) {
+
+				orderDetail.Order.PriceOrder += item.Price;
+
+			
+			}
+			context.SaveChanges();
+
+            return RedirectToAction("Index", "OrderDetails");
+        }
+        public IActionResult TruSoLuong(int id)
+        {
+            var orderDetail = context.OrderDetails.Include(b => b.Book).Include(o => o.Order).SingleOrDefault(o => o.Id == id);
+            orderDetail.Quantity -= 1;
+            orderDetail.Price = orderDetail.Book.PriceBook * orderDetail.Quantity;
+            context.Update(orderDetail);
+            orderDetail.Order.PriceOrder = 0;
+
+            foreach (var item in orderDetail.Order.OrderDetails)
+            {
+
+                orderDetail.Order.PriceOrder += item.Price;
+
+
+            }
+            context.SaveChanges();
+
+            return RedirectToAction("Index", "OrderDetails");
+        }
     }
 }
 
