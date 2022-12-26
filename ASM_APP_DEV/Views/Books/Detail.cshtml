@@ -6,6 +6,23 @@
 
 <h1>DetailBook</h1>
 
+    <script>
+
+
+        function AddToCart(id, quantity) {
+
+
+            if (quantity - 1 < 0) {
+                alert('San pham het hang');
+            }
+            else {
+                window.location.href = '@Url.Action("Create", "Orders")/' + id;
+
+            }
+        }
+
+    </script>
+
 
 
 <div class="super_container">
@@ -73,6 +90,8 @@
                                 <li class="breadcrumb-item active">Accessories</li>
                             </ol>
                         </nav>
+                        <input id="id @Model.Id" type="hidden" value="@Model.Id" />
+                        <input id="quantityBook @Model.QuantityBook" type="hidden" value="@Model.QuantityBook" />
                         <div class="product_name"><h1 style="margin-top:10px">@Model.NameBook</h1></div>
                         <div> <span class="product_price">@Model.PriceBook</span> VND </div>
                         <hr class="singleline">
@@ -82,17 +101,19 @@
                         <div class="order_info d-flex flex-row">
                         </div>
                         <div class="row">
-                            <div class="col-xs-6" style="margin-left: 13px;">
-                                <div class="product_quantity">
-                                    <span>QTY: </span> <input id="quantity_input" type="text" pattern="[0-9]*" value="1">
-                                    <div class="quantity_buttons">
-                                        <div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fas fa-chevron-up"></i></div>
-                                        <div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fas fa-chevron-down"></i></div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-xs-6">
-                                <button type="button" class="btn btn-primary shop-button">Add to Cart</button> <button type="button" class="btn btn-success shop-button">Buy Now</button>
+
+                                
+                                             @if(User.IsInRole("user")){
+                                    <a class="btn btn-primary shop-button" onclick="AddToCart(
+                            document.getElementById('id @Model.Id').value,
+                            document.getElementById('quantityBook @Model.QuantityBook').value)">
+                            Add To Card</a>
+                                    @*<a asp-action="Create" asp-controller="Orders" asp-route-id=@Model.Id class="btn btn-primary shop-button" data-abc="true">Add To Card</a>*@
+
+                                    @*<a asp-action="Detail" asp-route-id=@Model.Id class="btn btn-primary shop-button">Detail</a>*@
+             }
                             </div>
                         </div>
                     </div>

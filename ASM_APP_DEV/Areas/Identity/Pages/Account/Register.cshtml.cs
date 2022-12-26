@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -26,13 +28,14 @@ namespace ASM_APP_DEV.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
 
+
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender ,
-            RoleManager<IdentityRole> roleManager)
-
+            RoleManager<IdentityRole> roleManager
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,6 +44,7 @@ namespace ASM_APP_DEV.Areas.Identity.Pages.Account
             _roleManager = roleManager;
 
         }
+        public SelectList RoleSelectList { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -70,10 +74,18 @@ namespace ASM_APP_DEV.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             public string Address { get; set; }
+            [Required]
+            public string Role { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            RoleSelectList = new SelectList(new List<string>
+            {
+            "user",
+            "storeOwner"
+          }
+);
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -93,7 +105,7 @@ namespace ASM_APP_DEV.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    IdentityResult roleresult = await _userManager.AddToRoleAsync(user, "user");
+                    IdentityResult roleresult = await _userManager.AddToRoleAsync(user, Input.Role);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

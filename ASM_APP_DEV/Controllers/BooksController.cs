@@ -18,9 +18,12 @@ namespace ASM_APP_DEV.Controllers
     public class BooksController : Controller
     {
         private ApplicationDbContext _context;
-        public BooksController(ApplicationDbContext context)
+        private readonly UserManager<User> userManager;
+
+        public BooksController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index(string SearchString)
@@ -40,11 +43,12 @@ namespace ASM_APP_DEV.Controllers
            
         }
 
-        [HttpGet]
-        public IActionResult IndexAdmin()
+        public async Task<IActionResult> IndexAdmin()
         {
+            var currentUser = await userManager.GetUserAsync(User);
+
             //var booksInDb = _dbContext.Books.ToList();
-            IEnumerable<Book> booksInDb = _context.Books.ToList();
+            IEnumerable<Book> booksInDb = _context.Books.Where(b => b.UserId == currentUser.Id).ToList();
 
             return View(booksInDb);
         }
@@ -59,9 +63,12 @@ namespace ASM_APP_DEV.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var categoriesInDb = _context.Categories.Where(c => c.CategoryStatus == CategoryStatus.Successful).ToList();
+            var currentUser = await userManager.GetUserAsync(User);
+
+            var categoriesInDb = _context.Categories
+                .Where(c => c.CategoryStatus == CategoryStatus.Successful && c.UserId == currentUser.Id).ToList();
             CategoriesBookViewModel categoryBook = new CategoriesBookViewModel();
             categoryBook.Categories = categoriesInDb;
             return View(categoryBook);
@@ -69,8 +76,11 @@ namespace ASM_APP_DEV.Controllers
         }
 
             [HttpPost]
-        public IActionResult Create(Book book)
+        public async Task<IActionResult> Create(Book book)
         {
+            var currentUser = await userManager.GetUserAsync(User);
+
+            book.UserId = currentUser.Id;
             _context.Add(book);
             _context.SaveChanges();
 
@@ -109,9 +119,22 @@ namespace ASM_APP_DEV.Controllers
         public IActionResult Delete(int id)
         {
             var bookInDb = _context.Books.FirstOrDefault(c => c.Id == id);
+            var orderDetailInDB = _context.OrderDetails.SingleOrDefault(b => b.IdBook== id);
+
+            if(orderDetailInDB != null)
+            {
+                _context.Remove(orderDetailInDB);
+
+            }
             _context.Remove(bookInDb);
             _context.SaveChanges();
             return RedirectToAction("IndexAdmin", "Books");
+        }
+
+        [HttpGet]
+        public IActionResult Help()
+        {
+            return View();
         }
     }
 }

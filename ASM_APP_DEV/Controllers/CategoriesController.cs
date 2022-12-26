@@ -1,22 +1,28 @@
 ﻿using ASM_APP_DEV.Data;
 using ASM_APP_DEV.Enums;
 using ASM_APP_DEV.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASM_APP_DEV.Controllers
 {
     public class CategoriesController : Controller
     {
         ApplicationDbContext dbContext;
-        public CategoriesController(ApplicationDbContext dbContext)
+        UserManager<User> userManager;
+        public CategoriesController(ApplicationDbContext dbContext, UserManager<User> userManager)
         {
             this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categoriesInDb = dbContext.Categories.ToList();
+            var currentUser = await userManager.GetUserAsync(User);
+
+            var categoriesInDb = dbContext.Categories.Where(c => c.UserId == currentUser.Id).ToList();
             
             return View(categoriesInDb); 
         }
@@ -28,8 +34,11 @@ namespace ASM_APP_DEV.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
+            var currentUser = await userManager.GetUserAsync(User);
+
+            category.UserId = currentUser.Id;
             category.CategoryStatus = CategoryStatus.Unconfirmed;
             dbContext.Categories.Add(category);
             dbContext.SaveChanges();
