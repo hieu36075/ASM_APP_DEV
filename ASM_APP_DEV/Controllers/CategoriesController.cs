@@ -20,10 +20,11 @@ namespace ASM_APP_DEV.Controllers
             
             return View(categoriesInDb); 
         }
+
+        //Create Category Data
         [HttpGet]
         public IActionResult Create()
         {
-
             return View();
         }
         [HttpPost]
@@ -35,6 +36,8 @@ namespace ASM_APP_DEV.Controllers
             return RedirectToAction("Index", "Categories");
         }
 
+        //Delete Category Data
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             var category = dbContext.Categories.FirstOrDefault(c => c.Id == id);

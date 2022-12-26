@@ -39,8 +39,8 @@ namespace ASM_APP_DEV.Controllers
             }
            
         }
-        [HttpGet]
 
+        [HttpGet]
         public IActionResult IndexAdmin()
         {
             //var booksInDb = _dbContext.Books.ToList();
@@ -48,6 +48,8 @@ namespace ASM_APP_DEV.Controllers
 
             return View(booksInDb);
         }
+
+        //Detail Book Data
         [HttpGet]
         public IActionResult Detail(int id)
         {
@@ -75,6 +77,8 @@ namespace ASM_APP_DEV.Controllers
 
             return RedirectToAction("Index");
         }
+
+        //Edit Book Data
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -97,9 +101,11 @@ namespace ASM_APP_DEV.Controllers
             _context.Update(bookInDb);
             _context.SaveChanges();
 
-
             return RedirectToAction("Index");
         }
+
+        //Delete Book Data
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             var bookInDb = _context.Books.FirstOrDefault(c => c.Id == id);
