@@ -1,4 +1,4 @@
-﻿ @using ASM_APP_DEV.ViewModel
+﻿@using ASM_APP_DEV.ViewModel
 @model ViewModelCart
 @{
     ViewData["Title"] = "Index";
@@ -56,8 +56,8 @@
 
                             @if (Model.OrderDetails[i].Order.OrderStatus != ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
                             {
-             
-                                                           @Html.DisplayFor(modelItem => Model.OrderDetails[i].Quantity)
+
+                                @Html.DisplayFor(modelItem => Model.OrderDetails[i].Quantity)
 
                             }
                             else
@@ -68,9 +68,10 @@
                                 <a class="btn btn-primary bold-btn"
                        onclick="trusoluong(
                             document.getElementById('id @Model.OrderDetails[i].Id').value,
-                            document.getElementById('quantityBuy @Model.OrderDetails[i].Id').value)">-</a>
+                            document.getElementById('quantityBuy @Model.OrderDetails[i].Id').value,
+document.getElementById('quantityBook @Model.OrderDetails[i].Id').value )">-</a>
 
-                                <input asp-for="@Model.OrderDetails[i].Quantity" type = "hidden"/>
+                                <input asp-for="@Model.OrderDetails[i].Quantity" type="hidden" />
                                 @Html.DisplayFor(modelItem => Model.OrderDetails[i].Quantity)
 
                                 <a class="btn btn-primary bold-btn" onclick="congsoluong(
@@ -88,10 +89,10 @@
                         </td>
                         <td>
                             <a asp-controller="Books" asp-action="Detail" asp-route-id="@Model.OrderDetails[i].IdBook">View Books</a>
-                          @if (Model.OrderDetails[i].Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
-                                {
-                                    <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id="@Model.OrderDetails[i].Id">Delete</a>
-                                }
+                            @if (Model.OrderDetails[i].Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
+                            {
+                                <a asp-controller="OrderDetails" asp-action="Delete" asp-route-id="@Model.OrderDetails[i].Id">Delete</a>
+                            }
                         </td>
 
                     </tr>
@@ -130,10 +131,11 @@
 
 
 
-			</div> 
+            </div>
             @if (Model.Order.OrderStatus == ASM_APP_DEV.Enums.OrderStatus.Unconfirmed)
-			{
+            {
                 <button type="submit" class="btn btn-info">Purchase</button>
+
             }
         </div>
     </form>
@@ -164,11 +166,11 @@ else
 <script>
     function congsoluong(id, quantityBuy, quantityBook) {
         console.log(quantityBook);
-        console.log(quantityBuy ++);
-        if (quantityBuy ++ <= quantityBook) {
+        console.log(quantityBuy++);
+        if (quantityBuy++ <= quantityBook) {
             window.location.href = '@Url.Action("TangSoLuong", "OrderDetails")/' + id;
         }
-        else{
+        else {
 
             alert('So luong lon hon trong database');
         }
@@ -179,9 +181,12 @@ else
         if (quantityBuy - 1 > 0) {
             window.location.href = '@Url.Action("TruSoLuong", "OrderDetails")/' + id;
         }
-        else{
-        alert('So luong phai khac 0');
+        else {
+            alert('So luong phai khac 0');
         }
     }
-
+    var error = '@TempData["err"]';
+    if (error) {
+        alert(error);
+    }
 </script>
